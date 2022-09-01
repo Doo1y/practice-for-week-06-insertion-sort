@@ -19,7 +19,25 @@ function insertionSort(arr) {
   */
 
   // Your code here
+
+  let copyArr = arr.slice(); //[3, 2, 0, 4, 1]
+  let sorted = [copyArr.shift()]
+  while (copyArr.length) {
+    let curr = copyArr.shift(); // [2]
+    sorted.unshift(null); // [null, 3]
+    for (let i = 0; i < sorted.length; i++) {
+      // if at the end of loop [- OR -]  if the value after null is greater than curr
+      if (i === sorted.length - 1 || sorted[i + 1] > curr) {
+        // replace null with curr
+        sorted[i] = curr;
+        break;
+      }
+      [sorted[i + 1], sorted[i]] = [sorted[i], sorted[i + 1]]; //[null, 3] => [3, null]
+    }
+  }
+  return sorted;
 }
+
 
 // In-place Insertion Sort
 // Mutates the original array
@@ -39,8 +57,30 @@ function insertionSortInPlace(arr) {
   - Increment the dividing pointer and repeat
   Return the mutated array
   */
+  let divider = 0;
+  // [2, 4, 6, 8, 1, 3, 5, 7, 9]
+  while (divider <= arr.length - 1) {
+    temp = arr[divider]; // 6
 
-  // Your code here
+    for (let i = divider; i >= 0; i--) { // [2, 4, 6] ... temp = 6
+      if (i === 0) {
+        arr[i] = temp;
+      }
+
+      else if (arr[i - 1] > temp) {
+        arr[i] = arr[i - 1];
+      }
+
+      else if (arr[i - 1] < temp) { // 2 < 3 ?
+        arr[i] = temp;
+        break;
+      }
+    }
+
+    divider++;
+  }
+
+  return arr;
 }
 
 module.exports = [insertionSort, insertionSortInPlace];
